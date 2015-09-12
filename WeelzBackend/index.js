@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-var MONGOLAB_ENDPOINT = 'mongodb://user:password@ds047581.mongolab.com';
-=======
 var MONGOLAB_ENDPOINT = 'mongodb://admin:password@ds047581.mongolab.com',
     PORT = '47581',
     DB = 'weelz';
->>>>>>> origin/master
 
 var express = require('express'),
     app = express(),
