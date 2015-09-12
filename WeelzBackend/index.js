@@ -2,7 +2,7 @@ var MONGOLAB_ENDPOINT = 'mongodb://admin:password@ds047581.mongolab.com',
     PORT = '47581',
     DB = 'weelz';
 
-var DISTANCE = 10000; // parameter for endpoints
+//var distance = 10000; // parameter for endpoints
 
 var express = require('express'),
     app = express(),
@@ -76,7 +76,9 @@ function insertDocument(_db, _req, _res, callback) {
                 ]
             },
             'message' : _req.query['message'],
-            'type' : _req.query['type']
+            'type' : _req.query['type'],
+            'upvotes' : 1,
+            'downvotes' : 0
         },
         function(err, result) {
             if(err)
@@ -100,7 +102,6 @@ app.get('/getPins', function(req, res){
         getPins(mongoDatabase, req, res, function(err, pins) {
             if(pins)
             {
-                console.log('yay');
                 return res.send(pins);
 
             }
@@ -120,7 +121,9 @@ app.get('/getPins', function(req, res){
  * Get pins helper method
  */
 function getPins(_db, _req, _res, callback){
-
+    var distance=10000;
+    if(_req.query['radius'])
+        distance=Number(_req.query['radius']);
     _db.collection('pins').find({
         loc: {
             $near: {
@@ -129,7 +132,7 @@ function getPins(_db, _req, _res, callback){
                     Number(_req.query['lng']),
                     Number(_req.query['lat'])
                 ],
-                $maxDistance: DISTANCE
+                $maxDistance: distance
                 // Max and Min distance here
             }
         }
