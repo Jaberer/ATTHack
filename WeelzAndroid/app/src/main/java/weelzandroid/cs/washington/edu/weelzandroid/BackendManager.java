@@ -12,14 +12,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Joseph on 9/12/15.
  */
-public class BackendManager
-{
+public class BackendManager {
     /**
      * endpoints to append to db
      */
@@ -47,9 +48,65 @@ public class BackendManager
     /**
      * Constructor
      */
-    public BackendManager()
-    {
+    public BackendManager() {
     }
+
+    /**
+     * Get pins function
+     *
+     * @param lat latitude
+     * @param lng longitude
+     * @return JSON object
+     */
+    public String getPins(double lat, double lng) {
+        try {
+            String getPinsUrlParams = "";
+            getPinsUrlParams += "?"
+                    + "lng=" + lng
+                    + "&lat=" + lat;
+
+            url = new URL(NODE_ENDPOINT + GET_PINS_ENDPOINT + getPinsUrlParams);
+
+            // connect to heroku and reference endpoints
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            return sb.toString();
+        }
+    catch(MalformedURLException ex)
+    {
+        Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+    }
+
+    catch(IOException ex)
+    {
+        Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+    }
+
+    finally
+    {
+        if (c != null) {
+            try {
+                c.disconnect();
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    return null;
+}
 
     /**
      * Insert function that calls the insertPin endpoint
