@@ -27,6 +27,61 @@ mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
     console.log("connected to db: " + db);
 });
 
+//voting
+//todo: track users
+app.get('/vote', function(req, res){
+    if(mongoDatabase)
+    {
+        vote(mongoDatabase, req, res, function(err, pin){
+            if(err)
+            {
+                console.log('Error while logging vote: ' + err);
+                return res.send(err);
+            }    
+            else if(pin)
+            {
+                return res.send(pin);
+            }
+        })
+    }
+});
+
+/**
+ * Insert Pin helper method
+ * @param db
+ * @param callback
+ */
+function vote(_db, _req, _res, callback)
+{
+    if(_req.query['vote']=='up')
+    {
+        _db.collection('pins').update(
+            {_id:_req.query['id']},
+            {$inc:{upvotes: 1}},
+            function(err, result) {
+                if(err)
+                {
+                    console.log(err);
+                }
+                callback(result);
+        });
+    }
+    else
+    {
+        _db.collection('pins').update(
+            {_id:_req.query['id']},
+            {$inc:{downvotes: 1}},
+            function(err, result) {
+                if(err)
+                {
+                    console.log(err);
+                }
+                callback(result);
+        });
+    }
+    
+}
+
 // get document
 //var db = mongoclient.db('weelz');
 
@@ -53,7 +108,6 @@ app.get('/insertPin', function(req, res){
             }
             else if(pin)
             {
-                console.log('yay');
                 return res.send(pin);
             }
         });
