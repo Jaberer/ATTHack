@@ -1,3 +1,5 @@
+var MONGOLAB_ENDPOINT = 'ds047581.mongolab.com';
+
 var express = require('express'),
     app = express(),
     cons = require('consolidate'),
@@ -8,26 +10,55 @@ app.engine('html', cons.swig);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
-var mongoclient = new MongoClient(new Server("localhost", 27017));
-var db = mongoclient.db('course');
+// connect to mongoLab
+var mongoClient = new MongoClient(new Server(MONGOLAB_ENDPOINT, 47581));
 
-app.get('/', function(req, res){
+// get document
+var db = mongoClient.db('weelz');
 
-    // Find one document in our collection
-    db.collection('hello_mongo_express').findOne({}, function(err, doc) {
+/**
+ * This gets all
+ */
+db.collection('pins').find().toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result);
+});
 
-        if(err) throw err;
-
-        res.render('hello', doc);
+/**
+ * Inserts a pin
+ */
+app.get('/insertPin', function(req, res){
+    insertDocument(db, req, res, function() {
+        db.close();
     });
 });
 
-app.get('*', function(req, res){
-    res.send('Page Not Found', 404);
-});
 
-mongoclient.open(function(err, mongoclient) {
+/**
+ * Insert Pin helper method
+ * @param db
+ * @param callback
+ */
+var insertDocument = function(_db, _req, _res, callback) {
+    _db.collection('pins').insert( {
+        "pin" : {
+            "loc" : _req.query['loc'],
+            "message" : _req.query['message'],
+            "type" : _req.query['type']
+        }
+    }, function(err, result) {
+        //assert.equal(err, null);
+        //callback(err, result);
+        if(err)
+        {
+            console.log(JSON.stringify(err));
+            callback(err);
+        }
+        callback(result);
+    });
+};
 
+mongoClient.open(function(err, mongoClient) {
     if(err) throw err;
 
     app.listen(8080);
