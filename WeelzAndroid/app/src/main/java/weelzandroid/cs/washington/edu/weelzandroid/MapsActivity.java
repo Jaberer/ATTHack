@@ -20,39 +20,61 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    /**
+     * Might be null if Google Play services APK is not available.
+     * Main map object
+     */
+    private GoogleMap mMap;
+
+    /**
+     * Global field of location TO BE FILLED
+     */
     private Location currentLocation;
+
+    /**
+     * Denotes progress of marker being dropped
+     */
     private boolean markerDropped;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_maps); // goes to activity maps
+        // default generated code
         setUpMapIfNeeded();
 
+        // Centers map on your location upon set up and sets currentLocation
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
-
-                CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(11);
+                CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),
+                        location.getLongitude()));
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(11); // zoom level
                 mMap.moveCamera(center);
                 mMap.animateCamera(zoom);
 
+                // set location
                 currentLocation = location;
 
-                mMap.setOnMyLocationChangeListener(null);
+                // stop looking for location
+                mMap.setOnMyLocationChangeListener(null); // we should delete
             }
         });
-        hideTextOnLost();
+        // TODO: make working
+        //hideTextOnLost();
+
+        // click listener on report hazard button
         addListenerOnButton();
     }
 
+    /**
+     * Add Click listener for report hazard button
+     */
     public void addListenerOnButton() {
+        // button to push hazard
+        ImageButton commitHazardBtn = (ImageButton) findViewById(R.id.commit);
 
-        ImageButton imageButton = (ImageButton) findViewById(R.id.commit);
-
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        commitHazardBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -62,26 +84,23 @@ public class MapsActivity extends FragmentActivity implements
                             .title("Current Location")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 }
-
-
             }
 
         });
 
-        ImageButton addHazard = (ImageButton) findViewById(R.id.addHazard);
-
-        addHazard.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Toast.makeText(MapsActivity.this,
-                        "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
-                        .title("Current Location")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-            }
-        });
+        // button to add Hazard
+        //ImageButton addHazard = (ImageButton) findViewById(R.id.addHazard);
+//        addHazard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View arg0) {
+//                Toast.makeText(MapsActivity.this,
+//                        "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
+//                mMap.addMarker(new MarkerOptions()
+//                        .position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+//                        .title("Current Location")
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+//            }
+//        });
 
     }
 
@@ -128,6 +147,7 @@ public class MapsActivity extends FragmentActivity implements
     private void setUpMap() {
         mMap.setMyLocationEnabled(true);
 
+        // Overridden abstract functions for clicking on map
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
 
@@ -135,6 +155,9 @@ public class MapsActivity extends FragmentActivity implements
 
 
     @Override
+    /**
+     * Clears Map and Drops marker on location of long hold
+     */
     public void onMapLongClick(LatLng point) {
         mMap.clear();
         mMap.addMarker(new MarkerOptions()
@@ -146,17 +169,26 @@ public class MapsActivity extends FragmentActivity implements
 
 
     @Override
+    /**
+     * Clears map of markers
+     */
     public void onMapClick(LatLng latLng) {
         mMap.clear();
         markerDropped = false;
     }
 
+    /**
+     * Hides keyboard - doesn't work
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
+    /**
+     * Doesn't work
+     */
     private void hideTextOnLost() {
         /*findViewById(R.id.edit_reason).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -167,7 +199,4 @@ public class MapsActivity extends FragmentActivity implements
             }
         });*/
     }
-
-
-
 }
