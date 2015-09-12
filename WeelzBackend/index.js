@@ -8,6 +8,7 @@ var express = require('express'),
     app = express(),
     cons = require('consolidate'),
     mongoClient = require('mongodb').MongoClient,
+    ObjectID = require('mongodb').ObjectID,
     Server = require('mongodb').Server;
 
 app.engine('html', cons.swig);
@@ -61,10 +62,8 @@ function vote(_db, _req, _res, callback)
     {
         console.log('upvote!');
         _db.collection('pins').update({
-            _id:{
-                //$oid: _req.query['id']
-                $oid: '55f479d990b18bdff686623c'
-            }
+            _id: new ObjectID('55f479d990b18bdff686623c')
+
         },
         {
             $inc:{
@@ -84,10 +83,7 @@ function vote(_db, _req, _res, callback)
     {
         console.log('downvote!');
         _db.collection('pins').update({
-            _id:{
-                //$oid: _req.query['id']
-                $oid: '55f479d990b18bdff686623c'
-            }
+            _id: new ObjectID('55f479d990b18bdff686623c')
         },
         {
             $inc:{
