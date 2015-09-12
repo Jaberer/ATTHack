@@ -33,7 +33,7 @@ public class BackendManager {
             + ":"
             + PASSWORD
             + "@ds047581.mongolab.com";
-    private final String NODE_ENDPOINT = ""; // TODO: get this value from Akshay
+    private final String NODE_ENDPOINT = "http://default-environment-zzjfkhphna.elasticbeanstalk.com/";
 
     private URL url;
     private String response = "";
