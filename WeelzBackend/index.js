@@ -63,8 +63,7 @@ function vote(_db, _req, _res, callback)
     {
         console.log('upvote!');
         _db.collection('pins').update({
-            _id: new ObjectID('55f479d990b18bdff686623c')
-
+            _id: new ObjectID(_req.query['id'])
         },
         {
             $inc:{
@@ -84,7 +83,7 @@ function vote(_db, _req, _res, callback)
     {
         console.log('downvote!');
         _db.collection('pins').update({
-            _id: new ObjectID('55f479d990b18bdff686623c')
+            _id: new ObjectID(_req.query['id'])
         },
         {
             $inc:{
