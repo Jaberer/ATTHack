@@ -22,7 +22,7 @@ mongoClient.connect(MONGOLAB_ENDPOINT, function(err, db)
         console.log("err: " + err);
     }
     mongoDatabase = db;
-    console.log("connected to db: " + db);
+    console.log("connected to db: "  + db);
 });
 
 // get document
