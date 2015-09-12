@@ -36,10 +36,3 @@ proguard/
 
 #node_modules
 /node_modules
-
-WeelzAndroid/.idea/misc.xml
-WeelzAndroid/.idea/modules.xml
-WeelzAndroid/.idea/runConfigurations.xml
-WeelzAndroid/WeelzAndroid.iml
-WeelzAndroid/app/app.iml
-.idea/workspace.xml
