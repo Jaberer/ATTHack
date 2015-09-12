@@ -2,6 +2,8 @@ var MONGOLAB_ENDPOINT = 'mongodb://admin:password@ds047581.mongolab.com',
     PORT = '47581',
     DB = 'weelz';
 
+var DISTANCE = 10000; // parameter for endpoints
+
 var express = require('express'),
     app = express(),
     cons = require('consolidate'),
@@ -53,11 +55,13 @@ app.get('/insertPin', function(req, res){
  */
 function insertDocument(_db, _req, _res, callback) {
     _db.collection('pins').insert({
-            "pin" : {
-                "loc" : _req.query['loc'],
-                "message" : _req.query['message'],
-                "type" : _req.query['type']
-            }
+            "loc" : {
+                coordinates:_req.query['loc'],
+                index: '2dsphere',
+                type: 'Point'
+            },
+            "message" : _req.query['message'],
+            "type" : _req.query['type']
         },
         function(err, result) {
             if(err)
@@ -69,6 +73,29 @@ function insertDocument(_db, _req, _res, callback) {
         });
 };
 
+/**
+ * Get pins endpoint
+ */
+app.get('/getPins', function(req, res){
+    // Find documents near location
+    if(req.query['loc'])
+    {
+        mongoDatabase.collection('pins').find({
+            loc:{
+                $near:{$geometry:{type:'Point',coordinates:req.query['loc']}},
+                $maxDistance:DISTANCE
+            }
+        }, function(err, doc) {
+            if(err) throw err;
+            console.log(JSON.stringify(doc));
+            //res.render('hello', doc);
+        });
+    }
+    else
+    {
+        throw new Error('loc parameter required');
+    }
+});
 
 app.listen(8080);
 console.log('Express server started on port 8080');
