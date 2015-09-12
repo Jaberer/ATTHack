@@ -32,34 +32,58 @@
             android:id="@+id/contentLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+
+            >
 
             <LinearLayout
-                android:id="@+id/confirmationHolder"
+                android:orientation="vertical"
+                android:gravity="bottom"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/commit"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ok"
-                    android:gravity="center"/>
-                <ImageButton
-                    android:id="@+id/cancel"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/cancel"
-                    android:gravity="center"/>
+                <EditText
+                    android:id="@+id/text_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/roundedtext"
+                    android:ems="10"
+                    android:gravity="top|left"
+                    android:hint="What is the problem"
+                    android:inputType="textMultiLine"
+                    android:padding="20dp">
+
+                    <requestFocus />
+                </EditText>
+
+                <LinearLayout
+                    android:id="@+id/confirmationHolder"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|bottom"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/commit"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ok" />
+
+                    <ImageButton
+                        android:id="@+id/cancel"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/cancel" />
+                </LinearLayout>
+
+
             </LinearLayout>
-
 
         </LinearLayout>
     </SlidingDrawer>
