@@ -57,7 +57,10 @@ function insertDocument(_db, _req, _res, callback) {
     _db.collection('pins').insert({
             "loc" : {
                 type: 'Point',
-                coordinates:_req.query['loc']
+                coordinates: [
+                    Number(_req.query['lng']),
+                    Number(_req.query['lat'])
+                ]
             },
             "message" : _req.query['message'],
             "type" : _req.query['type']
@@ -77,15 +80,14 @@ function insertDocument(_db, _req, _res, callback) {
  */
 app.get('/getPins', function(req, res){
     // Find documents near location
-
+    if(req.query['loc'])
+    {
         mongoDatabase.collection('pins').find({
             loc:{
                 $near:{
                     $geometry:{
                         type:'Point',
-                        coordinates: [ Number(req.query['lng']),
-                            Number(req.query['lat'])
-                        ]
+                        coordinates:req.query['loc']
                     }
                 },
                 $maxDistance:DISTANCE
@@ -94,6 +96,11 @@ app.get('/getPins', function(req, res){
             if(err) throw err;
             console.log(JSON.stringify(doc));
         });
+    }
+    else
+    {
+        throw new Error('loc parameter required');
+    }
 });
 
 app.listen(8080);
