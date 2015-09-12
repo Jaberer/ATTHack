@@ -36,3 +36,5 @@ proguard/
 
 #node_modules
 /node_modules
+
+WeelzBackend.zip
