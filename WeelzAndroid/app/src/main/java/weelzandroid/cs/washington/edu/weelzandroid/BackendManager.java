@@ -59,6 +59,8 @@ public class BackendManager {
      * @return JSON object
      */
     public String getPins(double lat, double lng) {
+        HttpURLConnection conn = null;
+
         try {
             String getPinsUrlParams = "";
             getPinsUrlParams += "?"
@@ -68,14 +70,14 @@ public class BackendManager {
             url = new URL(NODE_ENDPOINT + GET_PINS_ENDPOINT + getPinsUrlParams);
 
             // connect to heroku and reference endpoints
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -96,9 +98,9 @@ public class BackendManager {
 
     finally
     {
-        if (c != null) {
+        if (conn != null) {
             try {
-                c.disconnect();
+                conn.disconnect();
             } catch (Exception ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
             }
