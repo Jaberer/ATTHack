@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,6 +21,8 @@ public class MapsActivity extends FragmentActivity implements
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Location currentLocation;
+    private boolean markerDropped;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class MapsActivity extends FragmentActivity implements
                 mMap.moveCamera(center);
                 mMap.animateCamera(zoom);
 
+                currentLocation = location;
+
                 mMap.setOnMyLocationChangeListener(null);
             }
         });
@@ -51,7 +56,12 @@ public class MapsActivity extends FragmentActivity implements
 
             @Override
             public void onClick(View arg0) {
-
+                if (!markerDropped) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                            .title("Current Location")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                }
 
 
             }
@@ -77,11 +87,25 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onClick(View arg0) {
 
-
             }
 
         });
 
+
+        ImageButton addHazard = (ImageButton) findViewById(R.id.addHazard);
+
+        addHazard.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Toast.makeText(MapsActivity.this,
+                        "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                        .title("Current Location")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            }
+        });
 
     }
 
@@ -142,6 +166,7 @@ public class MapsActivity extends FragmentActivity implements
                 .position(point)
                 .title("You are here")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        markerDropped = true;
     }
 
 
