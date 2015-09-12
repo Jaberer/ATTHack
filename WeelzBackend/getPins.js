@@ -1,7 +1,7 @@
 app.get('/getPins', function(req, res){
 
     // Find one document in our collection
-    db.collection('hello_mongo_express').findOne({}, function(err, doc) {
+    db.collection('pins').find({loc:{$near:req.loc}}, function(err, doc) {
 
         if(err) throw err;
 
