@@ -1,5 +1,6 @@
 package weelzandroid.cs.washington.edu.weelzandroid;
 
+import android.content.Context;
 import android.location.Location;
 import android.provider.SyncStateContract;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +24,19 @@ public class MapsActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+
+                CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(11);
+                mMap.moveCamera(center);
+                mMap.animateCamera(zoom);
+
+                mMap.setOnMyLocationChangeListener(null);
+            }
+        });
     }
 
     @Override
@@ -68,18 +82,6 @@ public class MapsActivity extends FragmentActivity implements
     private void setUpMap() {
         mMap.setMyLocationEnabled(true);
 
-        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-
-                CameraUpdate center=CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-                CameraUpdate zoom=CameraUpdateFactory.zoomTo(11);
-                mMap.moveCamera(center);
-                mMap.animateCamera(zoom);
-
-            }
-        });
-
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
 
@@ -100,4 +102,5 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapClick(LatLng latLng) {
 
     }
+
 }
