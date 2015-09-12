@@ -57,45 +57,51 @@ app.get('/vote', function(req, res){
  */
 function vote(_db, _req, _res, callback)
 {
-    if(_req.query['vote']=='up')
+    if(_req.query['vote']==='up')
     {
-        _db.collection('pins').update(
-            {_id:_req.query['id']},
-            {$inc:{upvotes: 1}},
-            function(err, result) {
-                if(err)
-                {
-                    console.log(err);
-                }
-                callback(result);
+        console.log('upvote!');
+        _db.collection('pins').update({
+            _id:{
+                $oid: _req.query['id']
+            }
+        },
+        {
+            $inc:{
+                upvotes: 1
+            }
+        },
+        function(err, result) {
+            if(err)
+            {
+                console.log('err: ' + err);
+            }
+            console.log('result: ' + result);
+            callback(err, result);
         });
     }
     else
     {
-        _db.collection('pins').update(
-            {_id:_req.query['id']},
-            {$inc:{downvotes: 1}},
-            function(err, result) {
-                if(err)
-                {
-                    console.log(err);
-                }
-                callback(result);
+        console.log('downvote!');
+        _db.collection('pins').update({
+            _id:{
+                $oid: _req.query['id']
+            }
+        },
+        {
+            $inc:{
+                downvotes: 1
+            }
+        },
+        function(err, result) {
+            if(err)
+            {
+                console.log('err: ' + err);
+            }
+            console.log('result: ' + result);
+            callback(err, result);
         });
     }
-    
 }
-
-// get document
-//var db = mongoclient.db('weelz');
-
-/**
- * This gets all
- */
-//mongoDatabase.collection('pins').find().toArray(function(err, result) {
-//    if (err) throw err;
-//    console.log(result);
-//});
 
 /**
  * Inserts a pin
@@ -141,8 +147,9 @@ function insertDocument(_db, _req, _res, callback) {
         function(err, result) {
             if(err)
             {
-                console.log(err);
+                console.log('err: ' + err);
             }
+            console.log('result: ' + result);
             //assert.equal(err, null);
             callback(null, result);
         });
