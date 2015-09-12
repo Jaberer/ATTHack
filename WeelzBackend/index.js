@@ -184,26 +184,37 @@ app.get('/getPins', function(req, res){
  * Get pins helper method
  */
 function getPins(_db, _req, _res, callback){
-    var distance=10000;
-    if(_req.query['radius'])
-        distance=Number(_req.query['radius']);
-    _db.collection('pins').find({
-        loc: {
-            $near: {
-                type: 'Point',
-                coordinates: [
-                    Number(_req.query['lng']),
-                    Number(_req.query['lat'])
-                ],
-                $maxDistance: distance
-                // Max and Min distance here
+    if(_req.query['lng'])
+    {
+        var distance=10000;
+        if(_req.query['radius'])
+            distance=Number(_req.query['radius']);
+        _db.collection('pins').find({
+            loc: {
+                $near: {
+                    type: 'Point',
+                    coordinates: [
+                        Number(_req.query['lng']),
+                        Number(_req.query['lat'])
+                    ],
+                    $maxDistance: distance
+                    // Max and Min distance here
+                }
             }
-        }
-    }).toArray(function(err, json){
-        console.log(json);
-        if(err) callback(err);
-        else callback(null, json);
-    });
+        }).toArray(function(err, json){
+            console.log(json);
+            if(err) callback(err);
+            else callback(null, json);
+        });
+    }
+    else
+    {
+       _db.collection('pins').find({}).toArray(function(err, json){
+            console.log(json);
+            if(err) callback(err);
+            else callback(null, json);
+        }); 
+    }
 }
 
 // dynamic port
