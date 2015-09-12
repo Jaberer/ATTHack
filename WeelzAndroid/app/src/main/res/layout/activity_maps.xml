@@ -24,8 +24,9 @@
             android:id="@+id/addHazard"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="80dp"
             android:background="@null"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:src="@drawable/plus" />
 
         <LinearLayout
@@ -52,7 +53,8 @@
                     android:gravity="top|left"
                     android:hint="What is the problem"
                     android:inputType="textMultiLine"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    android:textColor="@color/nephritis">
 
                     <requestFocus />
                 </EditText>
@@ -70,15 +72,17 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ok" />
+                        android:scaleType="centerInside"
+                        android:layout_marginRight="50dp"
+                        android:src="@drawable/checked" />
 
                     <ImageButton
                         android:id="@+id/cancel"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@null"
-                        android:scaleType="fitCenter"
+                        android:scaleType="centerInside"
+                        android:layout_marginLeft="50dp"
                         android:src="@drawable/cancel" />
                 </LinearLayout>
 

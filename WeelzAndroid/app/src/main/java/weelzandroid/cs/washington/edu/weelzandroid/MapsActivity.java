@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -53,14 +52,39 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onClick(View arg0) {
 
-                Toast.makeText(MapsActivity.this,
-                        "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
+
 
             }
 
         });
 
+        imageButton = (ImageButton) findViewById(R.id.addHazard);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+
+            }
+
+        });
+
+        imageButton = (ImageButton) findViewById(R.id.cancel);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+
+            }
+
+        });
+
+
     }
+
 
     @Override
     protected void onResume() {
@@ -133,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
     private void hideTextOnLost() {
-        /*findViewById(R.id.edit_reason).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*findViewById(R.id.).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -142,7 +166,6 @@ public class MapsActivity extends FragmentActivity implements
             }
         });*/
     }
-
 
 
 }
