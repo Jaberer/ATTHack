@@ -1,0 +1,19 @@
+{
+  "name": "weelzbackend",
+  "version": "1.0.0",
+  "description": "backend of weelz",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jaberer/ATTHack.git"
+  },
+  "author": "Joseph",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jaberer/ATTHack/issues"
+  },
+  "homepage": "https://github.com/Jaberer/ATTHack"
+}
