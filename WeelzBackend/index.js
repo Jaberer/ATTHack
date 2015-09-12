@@ -46,8 +46,8 @@ app.get('/vote', function(req, res){
                 return res.send(pin);
             }
         });
+        mongoDatabase.close();
     }
-    db.close();
 });
 
 /**
@@ -129,8 +129,8 @@ app.get('/insertPin', function(req, res){
                 return res.send(pin);
             }
         });
+        mongoDatabase.close();
     }
-    db.close();
 });
 
 
@@ -197,8 +197,8 @@ app.get('/getPins', function(req, res){
             console.log('No pins found');
             res.send('No pins found'); // querying is incorrect... should be returning something not null
         });
+        mongoDatabase.close();
     }
-    db.close();
 });
 
 /**
