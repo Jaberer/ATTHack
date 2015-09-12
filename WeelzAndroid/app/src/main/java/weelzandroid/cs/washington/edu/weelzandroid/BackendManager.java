@@ -51,58 +51,9 @@ public class BackendManager {
     public BackendManager() {
     }
 
-    public boolean updateVote(String _id, String up){
-        HttpURLConnection conn = null;
-
-        try {
-            String updateVoteUrlParams = "";
-            updateVoteUrlParams += "?"
-                    + "id=" + _id
-                    + "&vote=" + up;
-
-            url = new URL(NODE_ENDPOINT + UPDATE_VOTE_ENDPOINT + updateVoteUrlParams);
-
-            // connect to heroku and reference endpoints
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-//            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//            StringBuilder sb = new StringBuilder();
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                sb.append(line + "\n");
-//            }
-//            br.close();
-            return true;
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        catch (ProtocolException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (conn != null) {
-                try {
-                    conn.disconnect();
-                } catch (Exception ex) {
-                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return false;
-    }
-
     /**
      * Get pins function
+     *
      * @param lat latitude
      * @param lng longitude
      * @return JSON object

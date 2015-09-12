@@ -68,30 +68,6 @@ public class MapsActivity extends FragmentActivity implements
 
         });
 
-        imageButton = (ImageButton) findViewById(R.id.addHazard);
-
-        imageButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-
-
-            }
-
-        });
-
-        imageButton = (ImageButton) findViewById(R.id.cancel);
-
-        imageButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-
-            }
-
-        });
-
-
         ImageButton addHazard = (ImageButton) findViewById(R.id.addHazard);
 
         addHazard.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +84,6 @@ public class MapsActivity extends FragmentActivity implements
         });
 
     }
-
 
     @Override
     protected void onResume() {
@@ -182,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
     private void hideTextOnLost() {
-        /*findViewById(R.id.).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*findViewById(R.id.edit_reason).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -191,6 +166,7 @@ public class MapsActivity extends FragmentActivity implements
             }
         });*/
     }
+
 
 
 }

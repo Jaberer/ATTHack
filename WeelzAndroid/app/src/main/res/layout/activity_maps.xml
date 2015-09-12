@@ -18,17 +18,14 @@
         android:layout_alignParentBottom="true"
         android:content="@+id/contentLayout"
         android:handle="@+id/addHazard"
-        android:orientation="vertical"
-        android:layout_marginBottom="50dp">
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/addHazard"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginBottom="80dp"
-            android:paddingBottom="80dp"
             android:background="@null"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:src="@drawable/plus" />
 
         <LinearLayout
@@ -55,8 +52,7 @@
                     android:gravity="top|left"
                     android:hint="What is the problem"
                     android:inputType="textMultiLine"
-                    android:padding="20dp"
-                    android:textColor="@color/nephritis">
+                    android:padding="20dp">
 
                     <requestFocus />
                 </EditText>
@@ -74,17 +70,15 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@null"
-                        android:scaleType="centerInside"
-                        android:layout_marginRight="50dp"
-                        android:src="@drawable/checked" />
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ok" />
 
                     <ImageButton
                         android:id="@+id/cancel"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@null"
-                        android:scaleType="centerInside"
-                        android:layout_marginLeft="50dp"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/cancel" />
                 </LinearLayout>
 
