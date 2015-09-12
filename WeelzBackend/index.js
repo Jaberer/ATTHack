@@ -27,8 +27,10 @@ mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
     console.log("connected to db: " + db);
 });
 
-//voting
-//todo: track users
+/**
+ * voting endpoint
+ * todo: track users
+ */
 app.get('/vote', function(req, res){
     if(mongoDatabase)
     {
@@ -42,13 +44,15 @@ app.get('/vote', function(req, res){
             {
                 return res.send(pin);
             }
-        })
+        });
     }
 });
 
 /**
- * Insert Pin helper method
- * @param db
+ * Voting helper method
+ * @param _db
+ * @param _req
+ * @param _res
  * @param callback
  */
 function vote(_db, _req, _res, callback)
@@ -140,7 +144,7 @@ function insertDocument(_db, _req, _res, callback) {
                 console.log(err);
             }
             //assert.equal(err, null);
-            callback(result);
+            callback(null, result);
         });
 };
 
@@ -195,57 +199,6 @@ function getPins(_db, _req, _res, callback){
         if(err) callback(err);
         else callback(null, json);
     });
-
-    //if(cursorObject)
-    //{
-    //    //res.send(cursorObject.toArray());
-    //    console.log(cursorObject.toArray(
-    //        function(err, jsonObject) {
-    //
-    //        }));
-    //    callback(null, cursorObject.toArray());
-    //}
-    //else
-    //{
-    //    callback();
-    //}
-    //cursorObject.each(function(error, document){
-    //    //assert.equal(err, null);
-    //    if (document != null) {
-    //        console.log(document);
-    //    } else {
-    //        callback();
-    //    }
-    //});
-    //
-    //// Find documents near location
-    //_db.collection('pins').find({
-    //    loc: {
-    //        $near: {
-    //            type: 'Point',
-    //            coordinates: [
-    //                70, 15
-    //            ]
-    //            // Max and Min distance here
-    //        }
-    //    }
-    //},
-    //function(err, cursor) {
-    //    if(err) {
-    //        console.log('error in getting pins: ' + err);
-    //        callback(err, null);
-    //    }
-    //
-    //    //var docs = cursor.toArray(function (err, result) {
-    //    //    console.log(err, result);
-    //    //});
-    //
-    //    //console.log("Found the following records: " + docs); // getting really close! No error!
-    //    //callback(err, docs); // return it back to endpoint callback
-    //
-    //    console.log("Found the following records: " + JSON.stringify(cursor)); // getting really close! No error!
-    //    callback(err, cursor); // return it back to endpoint callback
-    //});
 }
 
 app.listen(8080);
