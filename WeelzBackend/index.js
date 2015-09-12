@@ -1,4 +1,4 @@
-var MONGOLAB_ENDPOINT = 'ds047581.mongolab.com';
+var MONGOLAB_ENDPOINT = 'mongodb://user:password@ds047581.mongolab.com:47581/weelz';
 
 var express = require('express'),
     app = express(),
