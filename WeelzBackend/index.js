@@ -122,7 +122,17 @@ app.get('/getPins', function(req, res){
 function getPins(_db, _req, _res, callback){
 
     _db.collection('pins').find({
-        
+        loc: {
+            $near: {
+                type: 'Point',
+                coordinates: [
+                    Number(_req.query['lng']),
+                    Number(_req.query['lat'])
+                ],
+                $maxDistance: DISTANCE
+                // Max and Min distance here
+            }
+        }
     }).toArray(function(err, json){
         console.log(json);
         if(err) callback(err);
