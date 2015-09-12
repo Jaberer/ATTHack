@@ -95,7 +95,7 @@ public class MapsActivity extends FragmentActivity implements
             Log.e(TAG, "Could not initialize the Hub.");
             finish();
             return;
-        }
+        }*/
     }
 
     /**
