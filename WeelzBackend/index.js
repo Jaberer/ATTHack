@@ -206,5 +206,6 @@ function getPins(_db, _req, _res, callback){
     });
 }
 
-app.listen(8080);
+// dynamic port
+app.listen(process.env.port || 8080);
 console.log('Express server started on port 8080');
