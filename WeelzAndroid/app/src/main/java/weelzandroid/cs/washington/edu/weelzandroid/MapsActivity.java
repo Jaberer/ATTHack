@@ -147,7 +147,8 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapClick(LatLng latLng) {
-
+        mMap.clear();
+        markerDropped = false;
     }
 
     public void hideKeyboard(View view) {
