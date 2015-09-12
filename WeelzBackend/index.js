@@ -88,7 +88,6 @@ app.get('/getPins', function(req, res){
         }, function(err, doc) {
             if(err) throw err;
             console.log(JSON.stringify(doc));
-            //res.render('hello', doc);
         });
     }
     else
