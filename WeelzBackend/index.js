@@ -1,9 +1,15 @@
-var MONGOLAB_ENDPOINT = 'mongodb://user:password@ds047581.mongolab.com:47581/weelz';
+<<<<<<< HEAD
+var MONGOLAB_ENDPOINT = 'mongodb://user:password@ds047581.mongolab.com';
+=======
+var MONGOLAB_ENDPOINT = 'mongodb://admin:password@ds047581.mongolab.com',
+    PORT = '47581',
+    DB = 'weelz';
+>>>>>>> origin/master
 
 var express = require('express'),
     app = express(),
     cons = require('consolidate'),
-    MongoClient = require('mongodb').MongoClient,
+    mongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server;
 
 app.engine('html', cons.swig);
@@ -11,25 +17,35 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
 // connect to mongoLab
-var mongoClient = new MongoClient(new Server(MONGOLAB_ENDPOINT, 47581));
+//var mongoclient = new mongoClient(new Server(MONGOLAB_ENDPOINT, 47581));
+var mongoDatabase;
+mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
+{
+    if(err)
+    {
+        console.log("err: " + err);
+    }
+    mongoDatabase = db;
+    console.log("connected to db: " + db);
+});
 
 // get document
-var db = mongoClient.db('weelz');
+//var db = mongoclient.db('weelz');
 
 /**
  * This gets all
  */
-db.collection('pins').find().toArray(function(err, result) {
-    if (err) throw err;
-    console.log(result);
-});
+//mongoDatabase.collection('pins').find().toArray(function(err, result) {
+//    if (err) throw err;
+//    console.log(result);
+//});
 
 /**
  * Inserts a pin
  */
 app.get('/insertPin', function(req, res){
-    insertDocument(db, req, res, function() {
-        db.close();
+    insertDocument(mongoDatabase, req, res, function() {
+        mongoDatabase.close();
     });
 });
 
@@ -39,28 +55,24 @@ app.get('/insertPin', function(req, res){
  * @param db
  * @param callback
  */
-var insertDocument = function(_db, _req, _res, callback) {
-    _db.collection('pins').insert( {
-        "pin" : {
-            "loc" : _req.query['loc'],
-            "message" : _req.query['message'],
-            "type" : _req.query['type']
-        }
-    }, function(err, result) {
-        //assert.equal(err, null);
-        //callback(err, result);
-        if(err)
-        {
-            console.log(JSON.stringify(err));
-            callback(err);
-        }
-        callback(result);
-    });
+function insertDocument(_db, _req, _res, callback) {
+    _db.collection('pins').insert({
+            "pin" : {
+                "loc" : _req.query['loc'],
+                "message" : _req.query['message'],
+                "type" : _req.query['type']
+            }
+        },
+        function(err, result) {
+            if(err)
+            {
+                console.log(err);
+            }
+            //assert.equal(err, null);
+            callback(result);
+        });
 };
 
-mongoClient.open(function(err, mongoClient) {
-    if(err) throw err;
 
-    app.listen(8080);
-    console.log('Express server started on port 8080');
-});
+app.listen(8080);
+console.log('Express server started on port 8080');

@@ -15,7 +15,7 @@ app.set('views', __dirname + '/views');
 // connect to mongoLab
 //var mongoclient = new mongoClient(new Server(MONGOLAB_ENDPOINT, 47581));
 var mongoDatabase;
-mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
+mongoClient.connect(MONGOLAB_ENDPOINT, function(err, db)
 {
     if(err)
     {
