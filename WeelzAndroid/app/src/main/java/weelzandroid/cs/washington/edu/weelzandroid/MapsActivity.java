@@ -1,10 +1,11 @@
 package weelzandroid.cs.washington.edu.weelzandroid;
 
-import android.content.Context;
+import android.app.Activity;
 import android.location.Location;
-import android.provider.SyncStateContract;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements
                 mMap.setOnMyLocationChangeListener(null);
             }
         });
+        hideTextOnLost();
     }
 
     @Override
@@ -101,6 +103,23 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMapClick(LatLng latLng) {
 
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+    private void hideTextOnLost() {
+        /*findViewById(R.id.edit_reason).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });*/
     }
 
 }
