@@ -62,7 +62,8 @@ function vote(_db, _req, _res, callback)
         console.log('upvote!');
         _db.collection('pins').update({
             _id:{
-                $oid: _req.query['id']
+                //$oid: _req.query['id']
+                $oid: '55f479d990b18bdff686623c'
             }
         },
         {
@@ -84,7 +85,8 @@ function vote(_db, _req, _res, callback)
         console.log('downvote!');
         _db.collection('pins').update({
             _id:{
-                $oid: _req.query['id']
+                //$oid: _req.query['id']
+                $oid: '55f479d990b18bdff686623c'
             }
         },
         {
