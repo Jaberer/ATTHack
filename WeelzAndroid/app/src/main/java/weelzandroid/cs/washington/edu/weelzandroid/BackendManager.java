@@ -1,5 +1,8 @@
 package weelzandroid.cs.washington.edu.weelzandroid;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,8 +38,8 @@ public class BackendManager {
             + "@ds047581.mongolab.com";
     private final String NODE_ENDPOINT = "http://default-environment-zzjfkhphna.elasticbeanstalk.com/";
 
+    // endpoint
     private URL url;
-    private String response = "";
 
     /**
      * Constructor
@@ -98,9 +101,9 @@ public class BackendManager {
      * Get pins function
      * @param lat latitude
      * @param lng longitude
-     * @return JSON object
+     * @return JSON object -- in order to do error handling, simply check for null
      */
-    public String getPins(double lat, double lng) {
+    public JSONObject getPins(double lat, double lng) {
         HttpURLConnection conn = null;
 
         try {
@@ -126,7 +129,13 @@ public class BackendManager {
                 sb.append(line + "\n");
             }
             br.close();
-            return sb.toString();
+            try {
+                return new JSONObject(sb.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+            //return sb.toString();
         }
         catch(MalformedURLException ex)
         {

@@ -1,12 +1,18 @@
 package weelzandroid.cs.washington.edu.weelzandroid;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Gallery;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -16,6 +22,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONObject;
 
 public class MapsActivity extends FragmentActivity implements
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
@@ -35,6 +43,16 @@ public class MapsActivity extends FragmentActivity implements
      * Denotes progress of marker being dropped
      */
     private boolean markerDropped;
+
+    /**
+     * Main backend handler
+     */
+    private BackendManager mainManager;
+
+    /**
+     * JSON to hold our pins
+     */
+    private JSONObject pins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +83,15 @@ public class MapsActivity extends FragmentActivity implements
 
         // click listener on report hazard button
         addListenerOnButton();
+        selectedPin();
+
+        // begin handling backend
+        mainManager = new BackendManager();
     }
 
     /**
      * Add Click listener for report hazard button
+     * Inserts Pin 
      */
     public void addListenerOnButton() {
         // button to push hazard
@@ -198,5 +221,35 @@ public class MapsActivity extends FragmentActivity implements
                 }
             }
         });*/
+    }
+
+    /**
+     * Displays information on tapped marker
+     */
+    private void selectedPin() {
+        FrameLayout frame = (FrameLayout)findViewById(R.id.framelayout);
+        //Parent holder
+        LinearLayout parent = new LinearLayout(this);
+
+        parent.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        parent.setOrientation(LinearLayout.VERTICAL);
+
+
+
+        EditText et=new EditText(this);
+        et.setEnabled(false);
+        et.setText("FUCK all of you");
+        et.setBackgroundColor(Color.parseColor("#ffffff"));
+        et.setLayoutParams(new Gallery.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT));
+
+        ImageButton upVote = new ImageButton(this);
+        upVote.setImageResource(R.drawable.up_round);
+
+        parent.addView(et);
+        parent.addView(upVote);
+
+
+        frame.addView(parent);
+
     }
 }
