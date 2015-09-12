@@ -54,12 +54,12 @@ public class MapsActivity extends FragmentActivity implements
         hideTextOnLost();
         addListenerOnButton();
         selectedPin();
-        Hub hub = Hub.getInstance();
+        /*Hub hub = Hub.getInstance();
         if (!hub.init(this)) {
             Log.e(TAG, "Could not initialize the Hub.");
             finish();
             return;
-        }
+        }*/
     }
 
     public void addListenerOnButton() {
