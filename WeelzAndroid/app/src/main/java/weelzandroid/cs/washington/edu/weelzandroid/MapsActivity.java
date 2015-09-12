@@ -1,8 +1,14 @@
 package weelzandroid.cs.washington.edu.weelzandroid;
 
-import android.support.v4.app.FragmentActivity;
+import android.app.Activity;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -20,8 +26,19 @@ public class MapsActivity extends FragmentActivity implements
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+
+                CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(11);
+                mMap.moveCamera(center);
+                mMap.animateCamera(zoom);
+
+                mMap.setOnMyLocationChangeListener(null);
+            }
+        });
+        hideTextOnLost();
     }
 
     @Override
@@ -65,20 +82,46 @@ public class MapsActivity extends FragmentActivity implements
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Titties"));
+        mMap.setMyLocationEnabled(true);
+
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
+
     }
+
 
     @Override
     public void onMapLongClick(LatLng point) {
-
-    }
-
-
-    @Override
-    public void onMapClick(LatLng point) {
+        mMap.clear();
         mMap.addMarker(new MarkerOptions()
                 .position(point)
                 .title("You are here")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
     }
+
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+    private void hideTextOnLost() {
+        /*findViewById(R.id.edit_reason).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });*/
+    }
+
+
+
 }
