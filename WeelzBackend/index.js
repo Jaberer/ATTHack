@@ -56,9 +56,9 @@ app.get('/insertPin', function(req, res){
 function insertDocument(_db, _req, _res, callback) {
     _db.collection('pins').insert({
             "loc" : {
+                type: 'Point',
                 coordinates:_req.query['loc'],
-                index: '2dsphere',
-                type: 'Point'
+                index: '2dsphere'
             },
             "message" : _req.query['message'],
             "type" : _req.query['type']
