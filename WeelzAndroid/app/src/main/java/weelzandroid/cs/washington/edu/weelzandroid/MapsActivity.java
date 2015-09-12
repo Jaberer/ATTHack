@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,6 +41,25 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
         hideTextOnLost();
+        addListenerOnButton();
+    }
+
+    public void addListenerOnButton() {
+
+        ImageButton imageButton = (ImageButton) findViewById(R.id.commit);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                Toast.makeText(MapsActivity.this,
+                        "ImageButton is clicked!", Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
     }
 
     @Override
