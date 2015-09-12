@@ -42,9 +42,22 @@ mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
  * Inserts a pin
  */
 app.get('/insertPin', function(req, res){
-    insertDocument(mongoDatabase, req, res, function() {
-        mongoDatabase.close();
-    });
+    if(mongoDatabase)
+    {
+        insertDocument(mongoDatabase, req, res, function(err, pin) {
+            if(err)
+            {
+                console.log('Error while inserting: ' + err);
+                return res.send(err);
+
+            }
+            else if(pin)
+            {
+                console.log('yay');
+                return res.send(pin);
+            }
+        });
+    }
 });
 
 
@@ -55,13 +68,15 @@ app.get('/insertPin', function(req, res){
  */
 function insertDocument(_db, _req, _res, callback) {
     _db.collection('pins').insert({
-            "loc" : {
+            'loc' : {
                 type: 'Point',
-                coordinates:_req.query['loc'],
-                index: '2dsphere'
+                coordinates: [
+                    Number(_req.query['lng']),
+                    Number(_req.query['lat'])
+                ]
             },
-            "message" : _req.query['message'],
-            "type" : _req.query['type']
+            'message' : _req.query['message'],
+            'type' : _req.query['type']
         },
         function(err, result) {
             if(err)
@@ -73,28 +88,108 @@ function insertDocument(_db, _req, _res, callback) {
         });
 };
 
+
 /**
- * Get pins endpoint
+ * get pins endpoint
+ * console example
+ * db.pins.find({loc:{$near: loc2}})
  */
 app.get('/getPins', function(req, res){
-    // Find documents near location
-    if(req.query['loc'])
+    if(mongoDatabase)
     {
-        mongoDatabase.collection('pins').find({
-            loc:{
-                $near:{$geometry:{type:'Point',coordinates:req.query['loc']}},
-                $maxDistance:DISTANCE
+        getPins(mongoDatabase, req, res, function(err, pins) {
+            if(pins)
+            {
+                console.log('yay');
+                return res.send(pins);
+
             }
-        }, function(err, doc) {
-            if(err) throw err;
-            console.log(JSON.stringify(doc));
+            else if(err)
+            {
+                console.log('Error in finding pins: ' + err);
+                return res.send('Error in finding pins: ' + err);
+
+            }
+            console.log('No pins found');
+            res.send('No pins found'); // querying is incorrect... should be returning something not null
         });
     }
-    else
-    {
-        throw new Error('loc parameter required');
-    }
 });
+
+/**
+ * Get pins helper method
+ */
+function getPins(_db, _req, _res, callback){
+
+    _db.collection('pins').find({
+        loc: {
+            $near: {
+                type: 'Point',
+                coordinates: [
+                    Number(_req.query['lng']),
+                    Number(_req.query['lat'])
+                ],
+                $maxDistance: DISTANCE
+                // Max and Min distance here
+            }
+        }
+    }).toArray(function(err, json){
+        console.log(json);
+        if(err) callback(err);
+        else callback(null, json);
+    });
+
+    //if(cursorObject)
+    //{
+    //    //res.send(cursorObject.toArray());
+    //    console.log(cursorObject.toArray(
+    //        function(err, jsonObject) {
+    //
+    //        }));
+    //    callback(null, cursorObject.toArray());
+    //}
+    //else
+    //{
+    //    callback();
+    //}
+    //cursorObject.each(function(error, document){
+    //    //assert.equal(err, null);
+    //    if (document != null) {
+    //        console.log(document);
+    //    } else {
+    //        callback();
+    //    }
+    //});
+    //
+    //// Find documents near location
+    //_db.collection('pins').find({
+    //    loc: {
+    //        $near: {
+    //            type: 'Point',
+    //            coordinates: [
+    //                70, 15
+    //            ]
+    //            // Max and Min distance here
+    //        }
+    //    }
+    //},
+    //function(err, cursor) {
+    //    if(err) {
+    //        console.log('error in getting pins: ' + err);
+    //        callback(err, null);
+    //    }
+    //
+    //    //var docs = cursor.toArray(function (err, result) {
+    //    //    console.log(err, result);
+    //    //});
+    //
+    //    //console.log("Found the following records: " + docs); // getting really close! No error!
+    //    //callback(err, docs); // return it back to endpoint callback
+    //
+    //    console.log("Found the following records: " + JSON.stringify(cursor)); // getting really close! No error!
+    //    callback(err, cursor); // return it back to endpoint callback
+    //});
+}
 
 app.listen(8080);
 console.log('Express server started on port 8080');
