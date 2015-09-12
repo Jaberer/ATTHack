@@ -17,24 +17,46 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:content="@+id/contentLayout"
-        android:handle="@+id/slideButton"
+        android:handle="@+id/addHazard"
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/slideButton"
+            android:id="@+id/addHazard"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/plus"
             android:background="@null"
             android:scaleType="fitCenter"
-            />
+            android:src="@drawable/plus" />
 
         <LinearLayout
             android:id="@+id/contentLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dip">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/confirmationHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/commit"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ok" />
+                <ImageButton
+                    android:id="@+id/cancel"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/cancel" />
+            </LinearLayout>
+
+
         </LinearLayout>
     </SlidingDrawer>
 </FrameLayout>
