@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -53,6 +54,12 @@ public class MapsActivity extends FragmentActivity implements
         hideTextOnLost();
         addListenerOnButton();
         selectedPin();
+        Hub hub = Hub.getInstance();
+        if (!hub.init(this)) {
+            Log.e(TAG, "Could not initialize the Hub.");
+            finish();
+            return;
+        }
     }
 
     public void addListenerOnButton() {
