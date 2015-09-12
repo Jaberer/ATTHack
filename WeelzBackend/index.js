@@ -18,21 +18,21 @@ app.set('views', __dirname + '/views');
 // connect to mongoLab
 //var mongoclient = new mongoClient(new Server(MONGOLAB_ENDPOINT, 47581));
 var mongoDatabase;
-mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
-{
-    if(err)
-    {
-        console.log("err: " + err);
-    }
-    mongoDatabase = db;
-    console.log("connected to db: " + db);
-});
 
 /**
  * voting endpoint
  * todo: track users
  */
 app.get('/vote', function(req, res){
+    mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
+    {
+        if(err)
+        {
+            console.log("err: " + err);
+        }
+        mongoDatabase = db;
+        console.log("connected to db: " + db);
+    });
     if(mongoDatabase)
     {
         vote(mongoDatabase, req, res, function(err, pin){
@@ -47,6 +47,7 @@ app.get('/vote', function(req, res){
             }
         });
     }
+    db.close();
 });
 
 /**
@@ -105,6 +106,15 @@ function vote(_db, _req, _res, callback)
  * Inserts a pin
  */
 app.get('/insertPin', function(req, res){
+    mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
+    {
+        if(err)
+        {
+            console.log("err: " + err);
+        }
+        mongoDatabase = db;
+        console.log("connected to db: " + db);
+    });
     if(mongoDatabase)
     {
         insertDocument(mongoDatabase, req, res, function(err, pin) {
@@ -120,6 +130,7 @@ app.get('/insertPin', function(req, res){
             }
         });
     }
+    db.close();
 });
 
 
@@ -160,6 +171,15 @@ function insertDocument(_db, _req, _res, callback) {
  * db.pins.find({loc:{$near: loc2}})
  */
 app.get('/getPins', function(req, res){
+    mongoClient.connect(MONGOLAB_ENDPOINT + ":" + PORT + "/" + DB, function(err, db)
+    {
+        if(err)
+        {
+            console.log("err: " + err);
+        }
+        mongoDatabase = db;
+        console.log("connected to db: " + db);
+    });
     if(mongoDatabase)
     {
         getPins(mongoDatabase, req, res, function(err, pins) {
@@ -178,6 +198,7 @@ app.get('/getPins', function(req, res){
             res.send('No pins found'); // querying is incorrect... should be returning something not null
         });
     }
+    db.close();
 });
 
 /**
