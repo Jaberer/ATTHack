@@ -117,6 +117,10 @@ public class MapsActivity extends FragmentActivity implements
         
     }
 
+    public void addMarkersToMap()
+    {
+
+    }
 
 
     /**

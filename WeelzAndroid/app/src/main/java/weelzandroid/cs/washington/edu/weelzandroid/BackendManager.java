@@ -47,6 +47,12 @@ public class BackendManager {
     public BackendManager() {
     }
 
+    /**
+     *
+     * @param _id
+     * @param up
+     * @return
+     */
     public boolean updateVote(String _id, String up){
         HttpURLConnection conn = null;
 
