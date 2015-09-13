@@ -162,6 +162,63 @@ public class BackendManager {
     }
 
     /**
+     * Get all pins function
+     * @return JSON object -- in order to do error handling, simply check for null
+     */
+    public JSONObject getPins() {
+        HttpURLConnection conn = null;
+
+        try {
+            url = new URL(NODE_ENDPOINT + GET_PINS_ENDPOINT);
+
+            // connect to heroku and reference endpoints
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            try {
+                return new JSONObject(sb.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+            //return sb.toString();
+        }
+        catch(MalformedURLException ex)
+        {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+        }
+
+        catch(IOException ex)
+        {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+        }
+
+        finally
+        {
+            if (conn != null) {
+                try {
+                    conn.disconnect();
+                } catch (Exception ex) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Insert function that calls the insertPin endpoint
      * @param lat lat coordinate
      * @param lng long coordinate
