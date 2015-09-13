@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -14,7 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
@@ -48,12 +47,14 @@ public class MapsActivity extends FragmentActivity implements
     /**
      * Main backend handler
      */
-    private BackendManager mainManager;
+    private BackendManager mBackendManager;
 
     /**
      * JSON to hold our pins
      */
-    private JSONObject pins;
+    private Marker[] pins;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,9 @@ public class MapsActivity extends FragmentActivity implements
                 // set location
                 currentLocation = location;
 
+                // get all pins on server and display on map
+                populateArrayOfMarkers();
+
                 // stop looking for location
                 mMap.setOnMyLocationChangeListener(null); // we should delete
             }
@@ -88,7 +92,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
         // begin handling backend
-        mainManager = new BackendManager();
+        mBackendManager = new BackendManager();
 
         /*Hub hub = Hub.getInstance();
         if (!hub.init(this)) {
@@ -99,22 +103,39 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     /**
+     * Gets all pins with BackendManager
+     * Then Creates an array of Markers
+     * from the JSON Array
+     */
+    public void populateArrayOfMarkers()
+    {
+        JSONObject pins = mBackendManager.getPins();
+        
+    }
+
+
+
+    /**
      * Add Click listener for report hazard button
-     * Inserts Pin 
+     * Inserts Pin at a hazard zone
      */
     public void addListenerOnButton() {
         // button to push hazard
         ImageButton commitHazardBtn = (ImageButton) findViewById(R.id.commit);
 
         commitHazardBtn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 if (!markerDropped) {
                     mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
-                            .title("Current Location")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        .position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()))
+                        .title("Current Location")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+                    // handle inserting pin to server
+                    // TODO: MAKE MARKER OBJECT AND REFERENCE TITLE AND TYPE
+                    mBackendManager.insertPin(currentLocation.getLatitude(),
+                            currentLocation.getLongitude(), "Current Location", 2);
                 }
             }
 
@@ -197,6 +218,10 @@ public class MapsActivity extends FragmentActivity implements
                 .title("You are here")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         markerDropped = true;
+
+        // TODO: MAKE MARKER OBJECT AND REFERENCE TITLE AND TYPE
+        mBackendManager.insertPin(currentLocation.getLatitude(),
+            currentLocation.getLongitude(), "You are here", 1);
     }
 
 
