@@ -55,6 +55,10 @@ public class MapsActivity extends FragmentActivity implements
      */
     private JSONObject pins;
 
+    public static final float[] COLORS = {BitmapDescriptorFactory.HUE_RED,
+                                          BitmapDescriptorFactory.HUE_ORANGE,
+                                          BitmapDescriptorFactory.HUE_YELLOW};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
