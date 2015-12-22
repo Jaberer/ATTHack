@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.JsonWriter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -97,6 +99,8 @@ public class MapsActivity extends FragmentActivity implements
 
         // begin handling backend
         mBackendManager = new BackendManager();
+        JSONObject newObject = mBackendManager.getPins();
+
 
         /*Hub hub = Hub.getInstance();
         if (!hub.init(this)) {
@@ -117,6 +121,9 @@ public class MapsActivity extends FragmentActivity implements
         
     }
 
+    /**
+     * add markers to Map
+     */
     public void addMarkersToMap()
     {
 
